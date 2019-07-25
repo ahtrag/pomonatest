@@ -1,5 +1,4 @@
 import React, { Fragment } from "react";
-import CssBaseline from "../../components/CssBaseline";
 import Paper from "../../components/Paper";
 import Grid from "../../components/Grid";
 import TextInput from "../../components/TextInput";
@@ -14,7 +13,6 @@ const AuthView = props => {
 
   return (
     <Fragment>
-      <CssBaseline />
       <Helmet>
         <title>Authentication - Pomona</title>
       </Helmet>
@@ -72,7 +70,7 @@ const AuthView = props => {
                       } ${styles.mdPadRight}`}
                     >
                       <Switch
-                        dataLabels={["login", "register"]}
+                        switchValues={["login", "register"]}
                         active={state.auth}
                         onSwitch={value =>
                           dispatch({

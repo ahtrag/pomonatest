@@ -2,12 +2,13 @@ import React, { Fragment, useState } from "react";
 import Paper from "../../components/Paper";
 import Grid from "../../components/Grid";
 import { useGlobalStyles } from "../../utils/styles";
-import CssBaseline from "../../components/CssBaseline";
 import Helmet from "react-helmet";
 import TextInput from "../../components/TextInput";
 import Button from "../../components/Button";
 import { ContextProvider, Context } from "./TodoState";
-import Modal from "../../components/Modal";
+import Todo from "./Todo";
+import ModalAddTodo from "./Modal/ModalAddTodo";
+import Loading from "../../components/Loading";
 
 const TodoView = props => {
   const styles = useGlobalStyles();
@@ -16,7 +17,6 @@ const TodoView = props => {
   console.log("isShowing", isShowing);
   return (
     <Fragment>
-      <CssBaseline />
       <Helmet>
         <title>To-Do - Pomona</title>
       </Helmet>
@@ -27,7 +27,11 @@ const TodoView = props => {
             dispatch,
             handleLogOut,
             handleChangeInput,
-            handleSubmitAddNotes
+            handleSubmitAddNotes,
+            handleChangeFilter,
+            filteredItems,
+            handleSubmitEditNotes,
+            handleSubmitDeleteNotes
           }) => (
             <Fragment>
               {console.log("state todo view", state)}
@@ -60,11 +64,15 @@ const TodoView = props => {
                         type="item"
                         sm={6}
                         md={6}
-                        className={`${styles.txtRight}`}
+                        className={`
+                          ${styles.txtRight}
+                          ${styles.disFlex}
+                          ${styles.jcEnd}
+                        `}
                       >
                         <Button
+                          className={styles.rounded}
                           onClick={handleLogOut}
-                          className={`${styles.rounded}`}
                         >
                           Log Out
                         </Button>
@@ -75,81 +83,95 @@ const TodoView = props => {
                         id="filter"
                         name="filter"
                         label="Filter"
-                        placeholder="filter . . ."
+                        placeholder="filter title . . ."
                         value={state.filter}
-                        onChange={handleChangeInput}
+                        onChange={handleChangeFilter}
                         fullWidth
+                        className={`${styles.rounded}`}
                       />
                     </Grid>
                   </Grid>
                 </Paper>
-
-                <Paper
-                  className={`
-                    ${styles.column} 
-                    ${styles.jcCenter} 
-                    ${styles.aiCenter}
-                    ${styles.overHidden}
+                {state.userData.data ? (
+                  state.userData.data.length > 0 ? (
+                    filteredItems(state.userData.data).map(data => (
+                      <Todo
+                        key={data.id}
+                        data={data}
+                        isShowing={isShowing}
+                        changeIsShowing={changeIsShowing}
+                        handleSubmitAddNotes={handleSubmitAddNotes}
+                        handleChangeInput={handleChangeInput}
+                        title={state.title}
+                        note={state.note}
+                        handleSubmitEditNotes={handleSubmitEditNotes}
+                        editTitle={state.editTitle}
+                        editNote={state.editNote}
+                        editPriority={state.editPriority}
+                        handleSubmitDeleteNotes={handleSubmitDeleteNotes}
+                      />
+                    ))
+                  ) : (
+                    <Paper
+                      className={`
+                        ${styles.column} 
+                        ${styles.jcCenter} 
+                        ${styles.aiCenter}
+                        ${styles.overHidden}
+                      `}
+                      style={{
+                        width: "20%",
+                        margin: "0px auto"
+                      }}
+                    >
+                      <img
+                        className={`
+                          ${styles.imgResponsiveWidth}
+                          ${styles.halfWidth}
+                          ${styles.lgPadAll}
+                        `}
+                        src="/assets/notodo.svg"
+                        alt="no-todo"
+                      />
+                      <h5
+                        style={{
+                          fontSize: "25px",
+                          padding: "10px"
+                        }}
+                      >
+                        There is no notes yet
+                      </h5>
+                      <Button
+                        className={`
+                          ${styles.fullWidth}
+                        `}
+                        onClick={() => changeIsShowing(!isShowing)}
+                      >
+                        Add Note
+                      </Button>
+                    </Paper>
+                  )
+                ) : (
+                  <div
+                    className={`
+                      ${styles.aiCenter}
+                      ${styles.jcCenter}
+                      ${styles.disFlex}
                     `}
-                  style={{
-                    width: "20%",
-                    margin: "0px auto"
-                  }}
-                >
-                  <img
-                    className={`
-                    ${styles.imgResponsiveWidth}
-                    ${styles.halfWidth}
-                    ${styles.lgPadAll}
-                  `}
-                    src="/assets/notodo.svg"
-                    alt="no-todo"
-                  />
-                  <h5
-                    style={{
-                      fontSize: "25px",
-                      padding: "10px"
-                    }}
                   >
-                    There is no notes yet
-                  </h5>
-                  <Button
-                    className={`
-                    ${styles.fullWidth}
-                   
-                  `}
-                    onClick={() => changeIsShowing(!isShowing)}
-                  >
-                    Add
-                  </Button>
-                </Paper>
+                    <Loading random={false} color="white" />
+                  </div>
+                )}
               </div>
 
-              <Modal
-                className={`${styles.gradAsh}`}
-                show={isShowing}
-                close={() => changeIsShowing(false)}
-                submit={() => handleSubmitAddNotes()}
-              >
-                <TextInput
-                  id="title"
-                  name="title"
-                  label="Title"
-                  placeholder="Input Title"
-                  value={state.title}
-                  onChange={handleChangeInput}
-                  fullWidth
-                />
-                <TextInput
-                  id="note"
-                  name="note"
-                  label="Note"
-                  placeholder="Input Note"
-                  value={state.note}
-                  onChange={handleChangeInput}
-                  fullWidth
-                />
-              </Modal>
+              <ModalAddTodo
+                isShowing={isShowing}
+                changeIsShowing={changeIsShowing}
+                handleSubmitAddNotes={handleSubmitAddNotes}
+                handleChangeInput={handleChangeInput}
+                title={state.title}
+                note={state.note}
+              />
             </Fragment>
           )}
         </Context.Consumer>

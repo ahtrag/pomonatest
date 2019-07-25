@@ -52,7 +52,7 @@ const ContextProvider = ({ children }) => {
 
           window.location.href = "/todo";
         } else {
-          alert("Please try again!");
+          alert("Email or Password Inccorect. Please try again!");
         }
       })
 
@@ -86,8 +86,8 @@ const ContextProvider = ({ children }) => {
       })
     })
       .then(res => res.json())
-      .then(json => localStorage.setItem("jwtToken", json.data.token))
-      .catch(err => console.error("Register Error", err));
+      .then(json => localStorage.setItem("jwtToken", json.data.token), ()=> alert('Login Success'))
+      .catch(err => alert("Register Error", err));
   };
 
   return localStorage.getItem("jwtToken") ? (
