@@ -25,7 +25,7 @@ const ModalAddTodo = props => {
           label="Title"
           placeholder="Input Title"
           value={props.title}
-          onChange={props.handleChangeInput}
+          onChange={e => props.handleChangeInput(e)}
           fullWidth
           className={`${styles.rounded}`}
         />
@@ -35,7 +35,7 @@ const ModalAddTodo = props => {
           label="Note"
           placeholder="Input Note"
           value={props.note}
-          onChange={props.handleChangeInput}
+          onChange={e => props.handleChangeInput(e)}
           fullWidth
           className={`${styles.rounded}`}
         />

@@ -1,7 +1,8 @@
 import React from "react";
 import { useGlobalStyles } from "../../../utils/styles";
 import Modal from "../../../components/Modal/ModalView";
-import TextInput from "../../../components/TextInput/TextInputView";
+import TextInput from "../../../components/TextInput";
+import Select from "../../../components/Select";
 
 const ModalAddTodo = props => {
   const styles = useGlobalStyles();
@@ -15,7 +16,8 @@ const ModalAddTodo = props => {
           props.changeIsShowing(!props.isShowing);
         }}
         submit={() => {
-          props.handleSubmitEditNotes();
+          console.log("SEBELUM KAMU TIDUR", props);
+          props.handleSubmitEditNotes(props.id);
           props.changeIsShowing(!props.isShowing);
         }}
       >
@@ -24,27 +26,30 @@ const ModalAddTodo = props => {
           name="editTitle"
           label="Edit Title"
           placeholder="Edit Title"
-          value={props.editTitle}
+          value={props.title}
           onChange={props.handleChangeInput}
           fullWidth
           className={`${styles.rounded}`}
         />
-        <TextInput
+        <Select
           id="editPriority"
           name="editPriority"
           label="Edit Priority"
-          placeholder="Edit Priority"
-          value={props.editPriority}
+          value={props.priority}
           onChange={props.handleChangeInput}
           fullWidth
           className={`${styles.rounded}`}
-        />
+        >
+          <option value="" />
+          <option value={1}>Done</option>
+          <option value={2}>Undone</option>
+        </Select>
         <TextInput
           id="editNote"
           name="editNote"
           label="Edit Note"
           placeholder="Edit Note"
-          value={props.editNote}
+          value={props.note}
           onChange={props.handleChangeInput}
           fullWidth
           className={`${styles.rounded}`}

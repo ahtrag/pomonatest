@@ -14,7 +14,7 @@ const ModalDeleteTodo = props => {
           props.changeIsShowing(!props.isShowing);
         }}
         submit={() => {
-          props.handleSubmitDeleteNotes();
+          props.handleSubmitDeleteNotes(props.id);
           props.changeIsShowing(!props.isShowing);
         }}
       >

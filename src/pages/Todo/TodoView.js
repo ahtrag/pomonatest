@@ -34,7 +34,6 @@ const TodoView = props => {
             handleSubmitDeleteNotes
           }) => (
             <Fragment>
-              {console.log("state todo view", state)}
               <div
                 className={`
                 ${styles.gradAsh}
@@ -104,11 +103,13 @@ const TodoView = props => {
                         handleChangeInput={handleChangeInput}
                         title={state.title}
                         note={state.note}
+                        priority={state.priority}
                         handleSubmitEditNotes={handleSubmitEditNotes}
                         editTitle={state.editTitle}
                         editNote={state.editNote}
                         editPriority={state.editPriority}
                         handleSubmitDeleteNotes={handleSubmitDeleteNotes}
+                        dispatch={dispatch}
                       />
                     ))
                   ) : (

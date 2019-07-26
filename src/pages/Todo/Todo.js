@@ -14,9 +14,20 @@ import ModalDeleteTodo from "./Modal/ModalDeleteTodo";
 const Todo = props => {
   const styles = useGlobalStyles();
   const [isShowingAdd, changeIsShowingAdd] = useState("");
-  const [isShowingEdit, changeIsShowingEdit] = useState("");
+  const [isShowingEdit, setIsShowingEdit] = useState("");
   const [isShowingDelete, changeIsShowingDelete] = useState("");
 
+  const changeIsShowingEdit = () => {
+    if (!isShowingEdit) {
+      props.dispatch({
+        type: "INITIALIZE_EDIT",
+        editTitleValue: props.data.title,
+        editNoteValue: props.data.note,
+        editPriorityValue: props.data.priority
+      });
+    }
+    setIsShowingEdit(!isShowingEdit);
+  };
   return (
     <div>
       <Paper
@@ -32,7 +43,7 @@ const Todo = props => {
             <h2>{props.data.title}</h2>
           </Grid>
           <Grid type="item" className={`${styles.disInlineFlex}`}>
-            <IconButton onClick={() => changeIsShowingEdit(!isShowingEdit)}>
+            <IconButton onClick={() => changeIsShowingEdit()}>
               <UpdateIcon />
             </IconButton>
             <IconButton onClick={() => changeIsShowingDelete(!isShowingDelete)}>
@@ -70,19 +81,21 @@ const Todo = props => {
       <ModalEditTodo
         isShowing={isShowingEdit}
         changeIsShowing={changeIsShowingEdit}
-        handleSubmitAddNotes={props.handleSubmitEditNotes}
+        handleSubmitEditNotes={props.handleSubmitEditNotes}
         handleChangeInput={props.handleChangeInput}
-        editTitle={props.editTitle}
-        editNote={props.editNote}
-        editPriority={props.editPriority}
+        title={props.editTitle}
+        note={props.editNote}
+        priority={props.editPriority}
+        id={props.data.id}
       />
       <ModalDeleteTodo
         isShowing={isShowingDelete}
         changeIsShowing={changeIsShowingDelete}
-        handleSubmitAddNotes={props.handleSubmitDeleteNotes}
+        handleSubmitDeleteNotes={props.handleSubmitDeleteNotes}
         handleChangeInput={props.handleChangeInput}
-        title={props.title}
-        note={props.note}
+        title={props.data.title}
+        note={props.data.note}
+        id={props.data.id}
       />
     </div>
   );

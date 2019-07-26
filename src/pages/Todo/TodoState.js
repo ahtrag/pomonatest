@@ -9,7 +9,7 @@ const initialState = {
   priority: Number(2),
   userData: {},
   editTitle: "",
-  editPriority: "",
+  editPriority: 0,
   editNote: ""
 };
 
@@ -33,6 +33,13 @@ const reducer = (state, action) => {
       return {
         ...state,
         [action.name]: action.value
+      };
+    case "INITIALIZE_EDIT":
+      return {
+        ...state,
+        editTitle: action.editTitleValue,
+        editNote: action.editNoteValue,
+        editPriority: action.editPriorityValue
       };
     default:
       throw new Error("Invalid Action");
@@ -77,7 +84,7 @@ const ContextProvider = ({ children }) => {
           userData: json
         })
       );
-  }, []);
+  }, [state.userData]);
 
   const handleChangeInput = e => {
     dispatch({
@@ -134,17 +141,17 @@ const ContextProvider = ({ children }) => {
       });
   };
 
-  const handleSubmitEditNotes = () => {
-    fetch("https://pomonatodo.herokuapp.com/todo", {
+  const handleSubmitEditNotes = id => {
+    fetch(`https://pomonatodo.herokuapp.com/todo/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: localStorage.getItem("jwtToken")
       },
       body: JSON.stringify({
-        editTitle: state.editTitle,
-        editNote: state.editNote,
-        editPriority: state.editPriority
+        title: state.editTitle,
+        note: state.editNote,
+        priority: state.editPriority
       })
     })
       .then(res => res.json())
@@ -158,8 +165,8 @@ const ContextProvider = ({ children }) => {
       });
   };
 
-  const handleSubmitDeleteNotes = () => {
-    fetch("https://pomonatodo.herokuapp.com/todo", {
+  const handleSubmitDeleteNotes = id => {
+    fetch(`https://pomonatodo.herokuapp.com/todo/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
