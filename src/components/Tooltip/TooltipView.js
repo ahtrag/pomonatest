@@ -38,7 +38,7 @@ const useStyles = createUseStyles({
 });
 
 const TooltipView = props => {
-  const { label, children, position } = props;
+  const { label, children } = props;
   const classes = useStyles();
 
   return (
