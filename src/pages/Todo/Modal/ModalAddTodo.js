@@ -9,6 +9,7 @@ const ModalAddTodo = props => {
   return (
     <div>
       <Modal
+        type="Add"
         className={`${styles.gradAsh}`}
         show={props.isShowing}
         close={() => {

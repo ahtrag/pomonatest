@@ -61,8 +61,8 @@ const useStyles = createUseStyles({
   modalBody: {
     padding: "10px 15px",
     textAlign: "center",
-    overflowY: "auto",
-    height: "300px"
+    overflowY: "auto"
+    // height: "300px"
   },
   modalFooter: {
     background: "#263238",
@@ -111,7 +111,7 @@ const ModalView = props => {
       <div className={classes.overlay} />
       <div className={classes.modal}>
         <div className={classes.modalHeader}>
-          <h3 className={classes.headerText}>Add Notes</h3>
+          <h3 className={classes.headerText}>{props.type} Notes</h3>
           <span className={classes.closeModalButton} onClick={props.close}>
             ×
           </span>

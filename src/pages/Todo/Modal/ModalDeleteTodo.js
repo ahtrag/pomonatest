@@ -8,6 +8,7 @@ const ModalDeleteTodo = props => {
   return (
     <div>
       <Modal
+        type="Delete"
         className={`${styles.gradAsh}`}
         show={props.isShowing}
         close={() => {
@@ -18,7 +19,7 @@ const ModalDeleteTodo = props => {
           props.changeIsShowing(!props.isShowing);
         }}
       >
-        Are you sure want to delete this note ?
+        Are you sure want to delete {props.title} ?
       </Modal>
     </div>
   );
